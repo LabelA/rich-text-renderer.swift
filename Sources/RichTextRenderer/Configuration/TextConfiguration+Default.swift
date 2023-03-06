@@ -3,8 +3,8 @@
 public extension TextConfiguration {
     static var `default`: TextConfiguration {
         .init(
-            paragraphSpacing: 15,
-            lineSpacing: 0
+            paragraphSpacing: 0,
+            lineSpacing: 10
         )
     }
 }

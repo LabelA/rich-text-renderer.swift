@@ -145,7 +145,7 @@ open class RichTextViewController: UIViewController, NSLayoutManagerDelegate {
 
     private func renderDocumentIfNeeded() {
         guard let document = richTextDocument else { return }
-
+        textView.isScrollEnabled = true
         DispatchQueue.main.async {
             var output = self.renderer.render(document: document)
             if self.trimWhitespace {
@@ -155,6 +155,7 @@ open class RichTextViewController: UIViewController, NSLayoutManagerDelegate {
             self.textStorage.setAttributedString(output)
             self.textStorage.endEditing()
             self.calculateAndSetPreferredContentSize()
+            self.textView.isScrollEnabled = false
         }
     }
 
