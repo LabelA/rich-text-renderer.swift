@@ -120,13 +120,8 @@ open class RichTextViewController: UIViewController, NSLayoutManagerDelegate {
         textView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         textView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
 
-        if isScrollEnabled {
-            textView.isScrollEnabled = true
-            textView.contentSize.height = .greatestFiniteMagnitude
-        } else {
-            // omitting .greatestFiniteMagnitude lets UITextView fit content when not scrolling
-            textView.isScrollEnabled = false
-        }
+        textView.isScrollEnabled = false
+        
         textView.isEditable = false
     }
 
@@ -145,7 +140,7 @@ open class RichTextViewController: UIViewController, NSLayoutManagerDelegate {
 
     private func renderDocumentIfNeeded() {
         guard let document = richTextDocument else { return }
-        textView.isScrollEnabled = true
+
         DispatchQueue.main.async {
             var output = self.renderer.render(document: document)
             if self.trimWhitespace {
@@ -155,12 +150,12 @@ open class RichTextViewController: UIViewController, NSLayoutManagerDelegate {
             self.textStorage.setAttributedString(output)
             self.textStorage.endEditing()
             self.calculateAndSetPreferredContentSize()
-            self.textView.isScrollEnabled = false
         }
     }
 
+
     private func calculateAndSetPreferredContentSize() {
-        let newContentSize = textView.sizeThatFits(textView.bounds.size)
+        let newContentSize = textView.sizeThatFits(CGSize(width: textView.bounds.width, height: CGFloat.greatestFiniteMagnitude))
         guard newContentSize != preferredContentSize else {
             return
         }
